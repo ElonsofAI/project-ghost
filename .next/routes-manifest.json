@@ -50,10 +50,22 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/api/audit",
+      "regex": "^/api/audit(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/audit(?:/)?$"
+    },
+    {
       "page": "/api/clients",
       "regex": "^/api/clients(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/clients(?:/)?$"
+    },
+    {
+      "page": "/api/integrations",
+      "regex": "^/api/integrations(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/integrations(?:/)?$"
     },
     {
       "page": "/api/subscribe",
@@ -68,6 +80,12 @@
       "namedRegex": "^/api/telemetry(?:/)?$"
     },
     {
+      "page": "/attribution",
+      "regex": "^/attribution(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/attribution(?:/)?$"
+    },
+    {
       "page": "/audit",
       "regex": "^/audit(?:/)?$",
       "routeKeys": {},
@@ -80,16 +98,58 @@
       "namedRegex": "^/clients(?:/)?$"
     },
     {
+      "page": "/cohorts",
+      "regex": "^/cohorts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/cohorts(?:/)?$"
+    },
+    {
       "page": "/dashboard",
       "regex": "^/dashboard(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/dashboard(?:/)?$"
     },
     {
+      "page": "/email-sms",
+      "regex": "^/email\\-sms(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/email\\-sms(?:/)?$"
+    },
+    {
+      "page": "/experiments",
+      "regex": "^/experiments(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/experiments(?:/)?$"
+    },
+    {
+      "page": "/funnel",
+      "regex": "^/funnel(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/funnel(?:/)?$"
+    },
+    {
+      "page": "/integrations",
+      "regex": "^/integrations(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/integrations(?:/)?$"
+    },
+    {
       "page": "/login",
       "regex": "^/login(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/overview",
+      "regex": "^/overview(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/overview(?:/)?$"
+    },
+    {
+      "page": "/pnl",
+      "regex": "^/pnl(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pnl(?:/)?$"
     }
   ],
   "dataRoutes": [],

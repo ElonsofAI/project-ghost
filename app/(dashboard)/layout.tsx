@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase-server'
-import { DashboardNav } from '@/components/DashboardNav'
+import { Sidebar } from '@/components/Sidebar'
 import { TelemetryFeed } from '@/components/TelemetryFeed'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -11,12 +11,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!user) redirect('/login')
 
   return (
-    <>
+    <div className="flex flex-1 overflow-hidden">
       <TelemetryFeed />
-      <DashboardNav userEmail={user.email ?? ''} />
-      <div className="flex-1 overflow-y-auto px-6 py-6 max-w-7xl mx-auto w-full">
-        {children}
+      <Sidebar />
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-8 py-7 max-w-7xl mx-auto">
+          {children}
+        </div>
       </div>
-    </>
+    </div>
   )
 }
