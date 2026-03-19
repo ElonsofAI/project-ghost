@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+// Login only — no public signup
 import { motion } from 'framer-motion'
 import { createClient } from '@/lib/supabase-browser'
 import { useRouter } from 'next/navigation'
@@ -8,7 +9,6 @@ import { useRouter } from 'next/navigation'
 export default function LoginPage() {
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
-  const [mode, setMode]         = useState<'login' | 'signup'>('login')
   const [error, setError]       = useState<string | null>(null)
   const [loading, setLoading]   = useState(false)
   const router  = useRouter()
@@ -19,15 +19,9 @@ export default function LoginPage() {
     setError(null)
     setLoading(true)
     try {
-      if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({ email, password })
-        if (error) throw error
-        router.push('/dashboard')
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
-        if (error) throw error
-        router.push('/dashboard')
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) throw error
+      router.push('/overview')
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Authentication failed.')
     } finally {
@@ -52,7 +46,7 @@ export default function LoginPage() {
             className="text-2xl font-bold uppercase tracking-wide text-bone"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            {mode === 'login' ? 'Access Terminal' : 'Enlist as Operator'}
+            Access Terminal
           </h1>
         </div>
 
@@ -97,23 +91,13 @@ export default function LoginPage() {
             disabled={loading}
             className="stark-button-execute w-full py-3.5 text-[11px] light-pipe mt-2 disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            {loading
-              ? '[AUTHENTICATING...]'
-              : mode === 'login'
-              ? 'AUTHORIZE GHOST_PROTOCOL'
-              : 'INITIALIZE OPERATOR'}
+            {loading ? '[AUTHENTICATING...]' : 'AUTHORIZE GHOST_PROTOCOL'}
           </button>
         </form>
 
-        {/* Mode toggle */}
         <p className="mt-6 font-mono text-[10px] text-bone/25 text-center">
-          {mode === 'login' ? 'No credentials? ' : 'Already enlisted? '}
-          <button
-            onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-            className="text-cyan hover:text-cyan/80 transition-colors"
-          >
-            {mode === 'login' ? 'Request Access' : 'Login'}
-          </button>
+          Authorized personnel only.{' '}
+          <a href="/" className="text-bone/40 hover:text-bone/60 transition-colors">← Back</a>
         </p>
       </motion.div>
     </main>

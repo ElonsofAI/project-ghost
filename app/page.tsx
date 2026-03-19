@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { RevenueOdometer } from '@/components/RevenueOdometer'
 import { HowItWorks } from '@/components/HowItWorks'
 
@@ -8,8 +9,22 @@ export default function HeroPage() {
   return (
     <main className="flex-1 flex flex-col items-center overflow-x-hidden">
 
+      {/* ── TOP NAV ──────────────────────────────────────── */}
+      <nav className="w-full fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-12 bg-obsidian/80 backdrop-blur-sm border-b border-bone/5">
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-orange pulse-orange" />
+          <span className="font-bold tracking-[0.25em] uppercase text-orange neon-orange text-sm"
+            style={{ fontFamily: 'var(--font-display)' }}>GHOST</span>
+        </div>
+        <Link href="/login">
+          <button className="font-mono text-[10px] tracking-widest text-bone/40 hover:text-bone transition-colors border border-bone/10 hover:border-bone/30 px-4 py-1.5">
+            TEAM LOGIN →
+          </button>
+        </Link>
+      </nav>
+
       {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="w-full flex flex-col items-center justify-center px-6 min-h-screen relative">
+      <section className="w-full flex flex-col items-center justify-center px-6 min-h-screen relative pt-12">
         {/* Scan line */}
         <div className="scan-line absolute inset-x-0 top-0 pointer-events-none" aria-hidden />
 
