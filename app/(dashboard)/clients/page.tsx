@@ -21,7 +21,8 @@ export default function ClientsPage() {
 
   async function loadClients() {
     const res = await fetch('/api/clients')
-    setClients(await res.json())
+    const data = await res.json()
+    setClients(Array.isArray(data) ? data : [])
     setLoading(false)
   }
 
