@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { createBrowserClient } from '@supabase/ssr'
 
 const NAV = [
   {
@@ -98,6 +99,27 @@ function MobileTabBar() {
   )
 }
 
+function LogoutButton({ className }: { className?: string }) {
+  const router = useRouter()
+  const handleLogout = async () => {
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
+  return (
+    <button
+      onClick={handleLogout}
+      className={`flex items-center gap-2.5 px-2 py-2 w-full border-l-2 border-transparent hover:bg-red-500/10 hover:border-red-500/50 transition-all duration-150 group ${className}`}
+    >
+      <span className="text-[11px] text-bone/30 group-hover:text-red-400">⏻</span>
+      <span className="font-mono text-[10px] tracking-wider text-bone/40 group-hover:text-red-400">Sign Out</span>
+    </button>
+  )
+}
+
 export function Sidebar() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const pathname = usePathname()
@@ -130,8 +152,9 @@ export function Sidebar() {
             </div>
           ))}
         </nav>
-        <div className="px-3 py-3 border-t border-bone/8 shrink-0">
-          <p className="font-mono text-[8px] text-bone/20 tracking-wider">ELONS OF AI // v0.1</p>
+        <div className="px-3 py-3 border-t border-bone/8 shrink-0 space-y-2">
+          <LogoutButton />
+          <p className="font-mono text-[8px] text-bone/20 tracking-wider px-2">ELONS OF AI // v0.1</p>
         </div>
       </aside>
 
@@ -187,8 +210,9 @@ export function Sidebar() {
                 </div>
               ))}
             </nav>
-            <div className="px-3 py-3 border-t border-bone/8 shrink-0">
-              <p className="font-mono text-[8px] text-bone/20 tracking-wider">ELONS OF AI // v0.1</p>
+            <div className="px-3 py-3 border-t border-bone/8 shrink-0 space-y-2">
+              <LogoutButton />
+              <p className="font-mono text-[8px] text-bone/20 tracking-wider px-2">ELONS OF AI // v0.1</p>
             </div>
           </div>
         </div>
