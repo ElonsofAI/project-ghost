@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 type Integration = {
   id: string
@@ -87,13 +87,18 @@ const PLATFORMS: Integration[] = [
   },
 ]
 
+// Platforms that have a server-side sync endpoint
+const SYNCABLE = ['shopify', 'meta', 'klaviyo']
+
 export default function IntegrationsPage() {
   const [clients, setClients]         = useState<{ id: string; name: string }[]>([])
   const [selectedClient, setSelected] = useState<string>('')
   const [expanded, setExpanded]       = useState<string | null>(null)
   const [forms, setForms]             = useState<Record<string, Record<string, string>>>({})
   const [saving, setSaving]           = useState<string | null>(null)
-  const [saved, setSaved]             = useState<string | null>(null)
+  const [saved, setSaved]             = useState<Set<string>>(new Set())
+  const [syncing, setSyncing]         = useState<string | null>(null)
+  const [syncResult, setSyncResult]   = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetch('/api/clients').then(r => r.json()).then(data => {
@@ -101,6 +106,29 @@ export default function IntegrationsPage() {
       if (data.length > 0) setSelected(data[0].id)
     })
   }, [])
+
+  const handleSync = useCallback(async (platform: string) => {
+    if (!selectedClient || syncing) return
+    setSyncing(platform)
+    setSyncResult(prev => ({ ...prev, [platform]: '' }))
+    try {
+      const res = await fetch(`/api/sync/${platform}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client_id: selectedClient, days: 30 }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setSyncResult(prev => ({ ...prev, [platform]: `Error: ${json.error}` }))
+      } else {
+        setSyncResult(prev => ({ ...prev, [platform]: `Synced ${json.synced ?? 0} days ✓` }))
+      }
+    } catch {
+      setSyncResult(prev => ({ ...prev, [platform]: 'Network error' }))
+    } finally {
+      setSyncing(null)
+    }
+  }, [selectedClient, syncing])
 
   function setField(platform: string, key: string, value: string) {
     setForms(prev => ({
@@ -121,9 +149,8 @@ export default function IntegrationsPage() {
       }),
     })
     setSaving(null)
-    setSaved(integration.id)
+    setSaved(prev => new Set(prev).add(integration.id))
     setExpanded(null)
-    setTimeout(() => setSaved(null), 3000)
   }
 
   return (
@@ -175,7 +202,7 @@ export default function IntegrationsPage() {
                       style={{ fontFamily: 'var(--font-display)' }}>
                       {integration.label}
                     </span>
-                    {saved === integration.id && (
+                    {saved.has(integration.id) && (
                       <span className="font-mono text-[9px] text-cyan tracking-widest">CONNECTED ✓</span>
                     )}
                   </div>
@@ -183,12 +210,24 @@ export default function IntegrationsPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3 shrink-0">
+                {saved.has(integration.id) && SYNCABLE.includes(integration.platform) && (
+                  <button
+                    onClick={e => { e.stopPropagation(); handleSync(integration.platform) }}
+                    disabled={syncing === integration.platform}
+                    className="stark-button-cyan px-3 py-1 text-[9px] disabled:opacity-40"
+                  >
+                    {syncing === integration.platform ? 'SYNCING...' : 'SYNC NOW'}
+                  </button>
+                )}
+                {syncResult[integration.platform] && (
+                  <span className="font-mono text-[9px] text-cyan/70">{syncResult[integration.platform]}</span>
+                )}
                 <span className={`font-mono text-[9px] px-2 py-0.5 border ${
-                  saved === integration.id
+                  saved.has(integration.id)
                     ? 'border-cyan/30 text-cyan'
                     : 'border-bone/15 text-bone/30'
                 }`}>
-                  {saved === integration.id ? 'ACTIVE' : 'CONNECT'}
+                  {saved.has(integration.id) ? 'ACTIVE' : 'CONNECT'}
                 </span>
                 <span className="font-mono text-[9px] text-bone/25">
                   {expanded === integration.id ? '▲' : '▼'}
