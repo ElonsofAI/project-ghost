@@ -127,6 +127,24 @@ export default function HeroPage() {
         <HowItWorks />
       </div>
 
+      {/* ── FOOTER ───────────────────────────────────────── */}
+      <footer className="w-full border-t border-bone/5 px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p className="font-mono text-[9px] text-bone/20 tracking-wider">
+          © {new Date().getFullYear()} ELONS OF AI LIMITED
+        </p>
+        <div className="flex items-center gap-6">
+          <Link href="/privacy" className="font-mono text-[9px] text-bone/25 hover:text-bone/50 tracking-wider transition-colors">
+            PRIVACY POLICY
+          </Link>
+          <Link href="/terms" className="font-mono text-[9px] text-bone/25 hover:text-bone/50 tracking-wider transition-colors">
+            TERMS OF SERVICE
+          </Link>
+          <a href="mailto:nate@elonsofai.com" className="font-mono text-[9px] text-bone/25 hover:text-bone/50 tracking-wider transition-colors">
+            CONTACT
+          </a>
+        </div>
+      </footer>
+
     </main>
   )
 }

@@ -1,10 +1,22 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PROTECTED_PREFIXES = ['/dashboard', '/audit']
+const PROTECTED_PREFIXES = [
+  '/overview',
+  '/audit',
+  '/experiments',
+  '/pnl',
+  '/attribution',
+  '/funnel',
+  '/cohorts',
+  '/email-sms',
+  '/clients',
+  '/integrations',
+  '/dashboard',
+]
 
 export async function middleware(request: NextRequest) {
-  // If env vars are missing, skip auth check and let the page handle it
+  // If env vars are missing, skip auth check
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next({ request })
   }
@@ -20,9 +32,7 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          )
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options as Parameters<typeof supabaseResponse.cookies.set>[2])
@@ -32,9 +42,7 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   const isProtected = PROTECTED_PREFIXES.some((p) =>
     request.nextUrl.pathname.startsWith(p)
@@ -50,5 +58,17 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/audit/:path*'],
+  matcher: [
+    '/overview/:path*',
+    '/audit/:path*',
+    '/experiments/:path*',
+    '/pnl/:path*',
+    '/attribution/:path*',
+    '/funnel/:path*',
+    '/cohorts/:path*',
+    '/email-sms/:path*',
+    '/clients/:path*',
+    '/integrations/:path*',
+    '/dashboard/:path*',
+  ],
 }
