@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Chakra+Petch:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans:   "Inter", sans-serif;
+  --font-mono:   "JetBrains Mono", monospace;
+  --font-chakra: "Chakra Petch", sans-serif;
+  --font-display: "Chakra Petch", sans-serif; /* backward-compat alias */
+
+  --color-cyan:     #00FFFF;
+  --color-orange:   #fa7002;
+  --color-obsidian: #010101;
+  --color-bone:     #F2F1EA;
+
+  /* Semantic tokens */
+  --color-bg:          #010101;
+  --color-bg-elevated: #0d0d0d;
+  --color-bg-surface:  #111111;
+  --color-accent:      #fa7002;
+  --color-accent-dim:  #fa700233;
+  --color-border:      rgba(242, 241, 234, 0.12);
+  --color-text-muted:  rgba(242, 241, 234, 0.45);
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background-color: #010101;
+    color: #F2F1EA;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+  }
+
+  body {
+    @apply bg-obsidian text-bone font-sans overflow-hidden antialiased font-light;
+    height: 100%;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; height: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #fa700244; border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: #fa700299; }
+}
+
+@layer components {
+  /* Dot grid background */
+  .dot-grid {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Light pipe: gradient border top-left white → bottom-right orange */
+  .light-pipe {
+    position: relative;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--color-obsidian), var(--color-obsidian)) padding-box,
+      linear-gradient(to bottom right, rgba(255,255,255,0.6), var(--color-orange)) border-box;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.04);
+  }
+
+  .light-pipe-elevated {
+    position: relative;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+      linear-gradient(to bottom right, rgba(255,255,255,0.6), var(--color-orange)) border-box;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.04);
+  }
+
+  /* Orange ambient glow on cards */
+  .light-pipe-glow {
+    box-shadow: 0 0 15px rgba(250, 112, 2, 0.2), 0 0 5px rgba(255, 255, 255, 0.08);
+  }
+
+  /* Neon orange text glow */
+  .neon-orange {
+    text-shadow: 0 0 10px rgba(250, 112, 2, 0.6), 0 0 20px rgba(250, 112, 2, 0.4);
+  }
+
+  /* Neon cyan text glow */
+  .neon-cyan {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.3);
+  }
+
+  /* Buttons */
+  .stark-button-orange {
+    @apply border border-orange/30 rounded-none px-6 py-2 uppercase tracking-[0.2em] text-[10px] font-medium transition-all duration-300 hover:bg-orange hover:text-obsidian text-orange;
+    text-shadow: 0 0 10px rgba(250, 112, 2, 0.6);
+    font-family: var(--font-mono);
+  }
+
+  .stark-button-cyan {
+    @apply border border-cyan/30 rounded-none px-6 py-2 uppercase tracking-[0.2em] text-[10px] font-medium transition-all duration-300 hover:bg-cyan hover:text-obsidian text-cyan;
+    font-family: var(--font-mono);
+  }
+
+  .stark-button-execute {
+    @apply border border-bone/60 rounded-none uppercase tracking-[0.2em] font-medium transition-all duration-300 text-orange bg-transparent;
+    text-shadow: 0 0 10px rgba(250, 112, 2, 0.6), 0 0 20px rgba(250, 112, 2, 0.4);
+    font-family: var(--font-mono);
+  }
+  .stark-button-execute:hover {
+    @apply border-orange;
+    box-shadow: 0 0 20px rgba(250, 112, 2, 0.3);
+  }
+
+  /* Ghost pill tag */
+  .ghost-tag {
+    @apply inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-orange/80 border border-orange/20 px-2 py-0.5;
+  }
+
+  /* Input */
+  .ghost-input {
+    @apply w-full bg-obsidian border border-bone/10 px-4 py-3 font-mono text-sm text-bone placeholder-bone/20 outline-none transition-all duration-200;
+  }
+  .ghost-input:focus {
+    @apply border-orange;
+    box-shadow: 0 0 12px rgba(250, 112, 2, 0.15);
+  }
+
+  /* Animations */
+  @keyframes pulse-orange {
+    0%, 100% { box-shadow: 0 0 8px rgba(250, 112, 2, 0.4); }
+    50%       { box-shadow: 0 0 22px rgba(250, 112, 2, 0.8); }
+  }
+  .pulse-orange { animation: pulse-orange 3s ease-in-out infinite; }
+
+  @keyframes scan-line {
+    0%   { transform: translateY(-100%); opacity: 0.4; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+  .scan-line {
+    animation: scan-line 8s linear infinite;
+    background: linear-gradient(to bottom, transparent, rgba(250,112,2,0.08), transparent);
+    height: 120px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  .cursor-blink { animation: blink 1.1s step-start infinite; }
+}
