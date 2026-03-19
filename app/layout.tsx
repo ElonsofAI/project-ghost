@@ -33,9 +33,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${chakraPetch.variable} ${jetbrainsMono.variable} h-full`}>
-      <body className="bg-obsidian text-bone font-sans font-light antialiased overflow-hidden h-full">
+      <body className="bg-obsidian text-bone font-sans font-light antialiased h-full">
         <div className="dot-grid fixed inset-0 pointer-events-none" aria-hidden />
-        <div className="relative h-full flex flex-col">
+        <div className="relative h-full flex flex-col overflow-y-auto overflow-x-hidden">
           {children}
           <ConsoleLog />
         </div>
