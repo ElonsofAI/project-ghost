@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Link from 'next/link'
 import { RevenueOdometer } from '@/components/RevenueOdometer'
 import { HowItWorks } from '@/components/HowItWorks'
 
@@ -69,11 +68,12 @@ export default function HeroPage() {
           transition={{ delay: 0.65, duration: 0.4 }}
           className="flex flex-col sm:flex-row gap-3 items-center mb-16"
         >
-          <Link href="/login">
-            <button className="stark-button-execute px-10 py-4 text-[11px] light-pipe">
-              START GHOST PROTOCOL
-            </button>
-          </Link>
+          <a
+            href="mailto:nate@elonsofai.com?subject=Audit Request&body=Store URL:%0ABusiness type:%0AMonthly revenue (approx):%0AMain challenge:"
+            className="stark-button-execute px-10 py-4 text-[11px] light-pipe"
+          >
+            REQUEST AN AUDIT →
+          </a>
           <button
             onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
             className="stark-button-cyan px-10 py-4 text-[11px]"

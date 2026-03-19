@@ -174,14 +174,15 @@ export function HowItWorks() {
           </p>
           <p className="font-bold text-xl text-bone uppercase tracking-tight"
             style={{ fontFamily: 'var(--font-display)' }}>
-            Your First Audit is Free
+            Request an In-Depth Audit
           </p>
           <p className="font-sans text-xs text-bone/40 font-light">
-            No credit card. No sales call. Just install, audit, and see the leaks.
+            We review your store, ads, and email flows — then deliver a ranked revenue leak report with a full action plan.
           </p>
-          <a href="/login"
+          <a
+            href="mailto:nate@elonsofai.com?subject=Audit Request&body=Store URL:%0ABusiness type:%0AMonthly revenue (approx):%0AMain challenge:"
             className="stark-button-execute px-8 py-3 text-[11px] light-pipe inline-block">
-            START GHOST PROTOCOL →
+            REQUEST AUDIT →
           </a>
         </div>
       </motion.div>
